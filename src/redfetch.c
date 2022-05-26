@@ -24,21 +24,16 @@ int main() {
     strtok(line, "\""); // Removing the last quote
   }
   fclose(osfile);
-  
+
   // Getting the WM
   FILE *fp;
   char wm[25];
 
-  fp = popen("wmctrl -m", "r");
-  if (fp == NULL) {
-    printf("Failed to run command\n" );
-    exit(1);
-  }
- 
+  fp = popen("ps -e | grep -m 1 -o -e '[s]owm' -e '[c]atwm' -e '[f]vwm' -e '[d]wm' -e '[2]bwm' -e '[m]onsterwm' -e '[t]inywm' -e '[x]11fs' -e '[x]monad'", "r");
   fgets(wm, sizeof(wm), fp);
   sscanf(wm, "Name: %s", wm);
   strcat(wm, "\n");
-  if(WEXITSTATUS(pclose(fp)) != 0){ strcpy(wm, "unknown\n"); }
+  if(WEXITSTATUS(pclose(fp)) != 0){ strcpy(wm, "TTY\n"); }
   // Printing.
   printf("            %s@%s\n", user, os.nodename);
   printf("  (\\_/)     os ~ %s\n", line);
